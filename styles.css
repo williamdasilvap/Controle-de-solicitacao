@@ -1,0 +1,15 @@
+body {
+  padding-bottom: 40px;
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+.card-header {
+  font-weight: 600;
+}
+
+#graficoRelatorio {
+  max-height: 300px;
+}

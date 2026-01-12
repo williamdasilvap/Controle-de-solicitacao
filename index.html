@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Controle de Horas e Solicitações</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0d6efd" />
+
+  <!-- Ícone simples (opcional, pode trocar depois) -->
+  <link rel="icon" type="image/png" href="icon-192.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-dark bg-primary mb-3">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Controle de Horas</span>
+    </div>
+  </nav>
+
+  <div class="container mb-5">
+
+    <!-- Abas -->
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="solicitacoes-tab" data-bs-toggle="tab"
+                data-bs-target="#solicitacoes" type="button" role="tab">
+          Solicitações
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="trabalho-tab" data-bs-toggle="tab"
+                data-bs-target="#trabalho" type="button" role="tab">
+          Trabalho / Horas
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab"
+                data-bs-target="#relatorios" type="button" role="tab">
+          Relatórios
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="backup-tab" data-bs-toggle="tab"
+                data-bs-target="#backup" type="button" role="tab">
+          Backup
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content pt-3">
+
+      <!-- ===================== SOLICITAÇÕES ===================== -->
+      <div class="tab-pane fade show active" id="solicitacoes" role="tabpanel">
+
+        <div class="card mb-3">
+          <div class="card-header">Nova Solicitação</div>
+          <div class="card-body">
+            <form id="formSolicitacao" class="row g-3">
+              <div class="col-md-4">
+                <label for="numeroSolicitacao" class="form-label">Número</label>
+                <input type="text" class="form-control" id="numeroSolicitacao" required />
+              </div>
+              <div class="col-md-8">
+                <label for="descricaoSolicitacao" class="form-label">Descrição</label>
+                <input type="text" class="form-control" id="descricaoSolicitacao" required />
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Salvar Solicitação</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Solicitações cadastradas</div>
+          <div class="card-body table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Número</th>
+                  <th>Descrição</th>
+                  <th>Criada em</th>
+                </tr>
+              </thead>
+              <tbody id="listaSolicitacoes"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================== TRABALHO / HORAS ===================== -->
+      <div class="tab-pane fade" id="trabalho" role="tabpanel">
+
+        <div class="card mb-3">
+          <div class="card-header">Selecionar Solicitação</div>
+          <div class="card-body row g-3 align-items-end">
+            <div class="col-md-8">
+              <label for="selectSolicitacaoTrabalho" class="form-label">Solicitação</label>
+              <select id="selectSolicitacaoTrabalho" class="form-select"></select>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <button id="btnIniciar" class="btn btn-success me-2">Iniciar</button>
+              <button id="btnFinalizar" class="btn btn-danger">Finalizar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">Trabalho em andamento</div>
+          <div class="card-body" id="infoTrabalhoAtual">
+            Nenhum trabalho em andamento.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Últimos registros</div>
+          <div class="card-body table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>Solicitação</th>
+                  <th>Início</th>
+                  <th>Fim</th>
+                  <th>Duração (h)</th>
+                </tr>
+              </thead>
+              <tbody id="listaRegistrosRecentes"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================== RELATÓRIOS ===================== -->
+      <div class="tab-pane fade" id="relatorios" role="tabpanel">
+
+        <div class="card mb-3">
+          <div class="card-header">Filtros</div>
+          <div class="card-body row g-3">
+            <div class="col-md-3">
+              <label for="dataInicioRel" class="form-label">Data início</label>
+              <input type="date" id="dataInicioRel" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label for="dataFimRel" class="form-label">Data fim</label>
+              <input type="date" id="dataFimRel" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label d-block">Tipo de relatório</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="tipoRel" id="relPorDia" value="dia" checked />
+                <label class="form-check-label" for="relPorDia">Por dia</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="tipoRel" id="relPorSolicitacao" value="solicitacao" />
+                <label class="form-check-label" for="relPorSolicitacao">Por solicitação</label>
+              </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button id="btnGerarRelatorio" class="btn btn-primary w-100">Gerar relatório</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header">Gráfico</div>
+          <div class="card-body">
+            <canvas id="graficoRelatorio" height="120"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Detalhes</div>
+          <div class="card-body table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  <th id="colunaChaveRel">Dia</th>
+                  <th>Total de horas</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaRelatorio"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================== BACKUP ===================== -->
+      <div class="tab-pane fade" id="backup" role="tabpanel">
+
+        <div class="card mb-3">
+          <div class="card-header">Exportar backup</div>
+          <div class="card-body">
+            <p>Gera um arquivo JSON com todas as solicitações e registros de horas.</p>
+            <button id="btnExportarBackup" class="btn btn-outline-primary">
+              Baixar backup (.json)
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Importar backup</div>
+          <div class="card-body">
+            <p>Selecione um arquivo JSON gerado pelo sistema para restaurar os dados.</p>
+            <input type="file" id="inputImportarBackup" accept="application/json" class="form-control mb-3" />
+            <button id="btnImportarBackup" class="btn btn-outline-success">
+              Importar backup
+            </button>
+            <p class="mt-2 text-muted small">
+              Atenção: ao importar, os dados atuais serão substituídos.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal Finalizar / Editar horários -->
+  <div class="modal fade" id="modalFinalizar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Finalizar trabalho / ajustar horários</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formFinalizar">
+            <div class="mb-3">
+              <label for="inicioEdit" class="form-label">Início</label>
+              <input type="datetime-local" id="inicioEdit" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="fimEdit" class="form-label">Fim</label>
+              <input type="datetime-local" id="fimEdit" class="form-control" required />
+            </div>
+          </form>
+          <div class="alert alert-warning small">
+            Certifique-se de que o horário de fim seja maior que o de início.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnSalvarFinalizar" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+    // Registro do Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('service-worker.js').catch(function (err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
