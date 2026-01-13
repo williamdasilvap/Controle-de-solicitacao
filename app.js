@@ -96,6 +96,35 @@ function existeConflito(inicioIso, fimIso, ignoreId = null) {
   });
 }
 
+// Resumo do topo
+function atualizarResumo() {
+  const elSol = document.getElementById('resumoTotalSolicitacoes');
+  const elReg = document.getElementById('resumoTotalRegistros');
+  const elHorasHoje = document.getElementById('resumoTotalHorasHoje');
+
+  if (!elSol || !elReg || !elHorasHoje) return;
+
+  elSol.textContent = solicitacoes.length;
+
+  const regsFinalizados = registros.filter((r) => r.fim);
+  elReg.textContent = regsFinalizados.length;
+
+  const hoje = new Date();
+  const hojeKey = toDateInputValue(hoje);
+  let minutosHoje = 0;
+  regsFinalizados.forEach((r) => {
+    const d = new Date(r.inicio);
+    if (toDateInputValue(d) === hojeKey) {
+      minutosHoje += diffMinutos(r.inicio, r.fim);
+    }
+  });
+  const h = Math.floor(minutosHoje / 60);
+  const m = minutosHoje % 60;
+  const hh = String(h).padStart(2, '0');
+  const mm = String(m).padStart(2, '0');
+  elHorasHoje.textContent = `${hh}:${mm}`;
+}
+
 // ======= RENDERIZAÇÕES =======
 function renderSolicitacoes() {
   const tbody = document.getElementById('listaSolicitacoes');
@@ -131,6 +160,7 @@ function renderSolicitacoes() {
 
   badgeTotal.textContent = solicitacoes.length;
   atualizarTrabalhoUI();
+  atualizarResumo();
 }
 
 function renderRegistrosRecentes() {
@@ -162,6 +192,8 @@ function renderRegistrosRecentes() {
     `;
     tbody.appendChild(tr);
   });
+
+  atualizarResumo();
 }
 
 function atualizarTrabalhoUI() {
@@ -175,9 +207,9 @@ function atualizarTrabalhoUI() {
     registroAtivoId = ativo.id;
     const sol = solicitacoes.find((s) => s.id === ativo.solicitacaoId);
     info.innerHTML = `
-      <p class="mb-1 small"><strong>Solicitação:</strong> ${sol ? sol.numero + ' - ' + sol.descricao : 'não encontrada'}</p>
-      <p class="mb-1 small"><strong>Início:</strong> ${formatarDataHora(ativo.inicio)}</p>
-      <p class="mb-0 small text-danger">Trabalho em andamento...</p>
+      <p class="mb-1 tiny"><strong>Solicitação:</strong> ${sol ? sol.numero + ' - ' + sol.descricao : 'não encontrada'}</p>
+      <p class="mb-1 tiny"><strong>Início:</strong> ${formatarDataHora(ativo.inicio)}</p>
+      <p class="mb-0 tiny text-danger">Trabalho em andamento...</p>
     `;
     btnIniciar.disabled = true;
     btnFinalizar.disabled = false;
@@ -186,12 +218,13 @@ function atualizarTrabalhoUI() {
     }
   } else {
     registroAtivoId = null;
-    info.innerHTML = '<span class="text-muted small">Nenhum trabalho em andamento.</span>';
+    info.innerHTML = '<span class="text-muted tiny">Nenhum trabalho em andamento.</span>';
     btnIniciar.disabled = solicitacoes.length === 0;
     btnFinalizar.disabled = true;
   }
 
   renderRegistrosRecentes();
+  atualizarResumo();
 }
 
 function gerarRelatorio() {
@@ -351,6 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSolicitacoes();
   renderRegistrosRecentes();
   atualizarTrabalhoUI();
+  atualizarResumo();
 
   // Form nova solicitação
   document.getElementById('formSolicitacao').addEventListener('submit', (e) => {
@@ -390,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modal.show();
     } else if (action === 'delete') {
       const temRegistros = registros.some((r) => r.solicitacaoId === id);
-      const msgExtra = temRegistros ? '\\n\\nAtenção: todos os registros de horas desta solicitação também serão removidos.' : '';
+      const msgExtra = temRegistros ? '\n\nAtenção: todos os registros de horas desta solicitação também serão removidos.' : '';
       if (confirm('Deseja realmente excluir esta solicitação?' + msgExtra)) {
         solicitacoes = solicitacoes.filter((s) => s.id !== id);
         if (temRegistros) {

@@ -18,312 +18,334 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="bg-body-tertiary">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-    <div class="container-fluid">
-      <span class="navbar-brand fw-semibold">
-        <span class="me-2">⏱️</span>Controle de Horas
-      </span>
-    </div>
-  </nav>
+  <div class="app-shell d-flex">
+    <!-- Sidebar -->
+    <aside class="app-sidebar d-flex flex-column p-3 border-end">
+      <div class="d-flex align-items-center mb-4">
+        <div class="sidebar-logo me-2 d-flex align-items-center justify-content-center rounded-3 bg-primary text-white">
+          ⏱️
+        </div>
+        <div>
+          <div class="fw-semibold small">Controle de Horas</div>
+          <div class="text-muted tiny">Solicitações & Tempo</div>
+        </div>
+      </div>
 
-  <main class="container my-3 mb-5">
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4">
-          <div class="card-body d-flex flex-wrap align-items-center gap-3">
+      <nav class="nav nav-pills flex-column mb-4" id="mainTabs" role="tablist">
+        <button class="nav-link active d-flex align-items-center gap-2" id="solicitacoes-tab"
+                data-bs-toggle="tab" data-bs-target="#solicitacoes" type="button" role="tab">
+          <span>📄</span><span class="small">Solicitações</span>
+        </button>
+        <button class="nav-link d-flex align-items-center gap-2" id="trabalho-tab"
+                data-bs-toggle="tab" data-bs-target="#trabalho" type="button" role="tab">
+          <span>▶️</span><span class="small">Trabalho</span>
+        </button>
+        <button class="nav-link d-flex align-items-center gap-2" id="relatorios-tab"
+                data-bs-toggle="tab" data-bs-target="#relatorios" type="button" role="tab">
+          <span>📊</span><span class="small">Relatórios</span>
+        </button>
+        <button class="nav-link d-flex align-items-center gap-2" id="backup-tab"
+                data-bs-toggle="tab" data-bs-target="#backup" type="button" role="tab">
+          <span>💾</span><span class="small">Backup</span>
+        </button>
+      </nav>
+
+      <div class="mt-auto small text-muted">
+        <div id="resumoDataAtual"></div>
+        <div class="tiny">PWA offline • LocalStorage</div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="app-main flex-grow-1">
+      <header class="app-header border-bottom bg-white">
+        <div class="container-fluid py-2">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
             <div>
-              <h5 class="card-title mb-1">Resumo rápido</h5>
-              <p class="text-muted mb-0 small">Cadastre solicitações, registre horas e gere relatórios.</p>
+              <h6 class="mb-1 fw-semibold">Painel de trabalho</h6>
+              <p class="mb-0 text-muted tiny">
+                Cadastre solicitações, registre o tempo e acompanhe seus relatórios.
+              </p>
             </div>
-            <div class="ms-auto d-flex gap-2 flex-wrap">
-              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#solicitacoes">
-                Solicitações
-              </button>
-              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#trabalho">
-                Trabalho
-              </button>
-              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#relatorios">
-                Relatórios
-              </button>
-              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#backup">
-                Backup
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <ul class="nav nav-pills nav-fill small shadow-sm rounded-4 bg-white p-1" id="mainTabs" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active rounded-3" id="solicitacoes-tab" data-bs-toggle="tab"
-                    data-bs-target="#solicitacoes" type="button" role="tab">
-              📄 Solicitações
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link rounded-3" id="trabalho-tab" data-bs-toggle="tab"
-                    data-bs-target="#trabalho" type="button" role="tab">
-              ▶️ Trabalho
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link rounded-3" id="relatorios-tab" data-bs-toggle="tab"
-                    data-bs-target="#relatorios" type="button" role="tab">
-              📊 Relatórios
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link rounded-3" id="backup-tab" data-bs-toggle="tab"
-                    data-bs-target="#backup" type="button" role="tab">
-              💾 Backup
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="tab-content pt-3">
-
-      <!-- ===================== SOLICITAÇÕES ===================== -->
-      <div class="tab-pane fade show active" id="solicitacoes" role="tabpanel">
-        <div class="row g-3">
-          <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Nova Solicitação</h6>
+            <div class="d-flex flex-wrap gap-2">
+              <div class="resumo-pill">
+                <span class="tiny text-muted d-block">Solicitações</span>
+                <span class="fw-semibold" id="resumoTotalSolicitacoes">0</span>
               </div>
-              <div class="card-body">
-                <form id="formSolicitacao" class="row g-3">
-                  <div class="col-12">
-                    <label for="numeroSolicitacao" class="form-label small">Número</label>
-                    <input type="text" class="form-control form-control-sm" id="numeroSolicitacao" required />
-                  </div>
-                  <div class="col-12">
-                    <label for="descricaoSolicitacao" class="form-label small">Descrição</label>
-                    <input type="text" class="form-control form-control-sm" id="descricaoSolicitacao" required />
-                  </div>
-                  <div class="col-12 d-grid">
-                    <button type="submit" class="btn btn-primary btn-sm rounded-3">
-                      Salvar solicitação
-                    </button>
-                  </div>
-                </form>
+              <div class="resumo-pill">
+                <span class="tiny text-muted d-block">Registros</span>
+                <span class="fw-semibold" id="resumoTotalRegistros">0</span>
               </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
-                <h6 class="mb-0">Solicitações cadastradas</h6>
-                <span class="badge bg-light text-muted ms-2 small" id="badgeTotalSolicitacoes">0</span>
-              </div>
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table table-sm table-hover align-middle mb-0">
-                    <thead class="table-light small">
-                      <tr>
-                        <th>#</th>
-                        <th>Número</th>
-                        <th>Descrição</th>
-                        <th>Criada em</th>
-                        <th class="text-end">Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody id="listaSolicitacoes" class="small"></tbody>
-                  </table>
-                </div>
+              <div class="resumo-pill">
+                <span class="tiny text-muted d-block">Hoje (HH:MM)</span>
+                <span class="fw-semibold" id="resumoTotalHorasHoje">00:00</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <!-- ===================== TRABALHO / HORAS ===================== -->
-      <div class="tab-pane fade" id="trabalho" role="tabpanel">
-        <div class="row g-3">
-          <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Selecionar solicitação</h6>
-              </div>
-              <div class="card-body">
-                <div class="mb-3">
-                  <label for="selectSolicitacaoTrabalho" class="form-label small">Solicitação</label>
-                  <select id="selectSolicitacaoTrabalho" class="form-select form-select-sm"></select>
-                </div>
-                <div class="d-grid gap-2">
-                  <button id="btnIniciar" class="btn btn-success btn-sm rounded-3">
-                    ▶️ Iniciar
-                  </button>
-                  <button id="btnFinalizar" class="btn btn-danger btn-sm rounded-3">
-                    ⏹️ Finalizar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <section class="app-content">
+        <div class="container-fluid py-3">
+          <div class="tab-content">
 
-          <div class="col-12 col-lg-8">
-            <div class="row g-3">
-              <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-4">
-                  <div class="card-header bg-white border-0 rounded-top-4">
-                    <h6 class="mb-0">Trabalho em andamento</h6>
-                  </div>
-                  <div class="card-body" id="infoTrabalhoAtual">
-                    <span class="text-muted small">Nenhum trabalho em andamento.</span>
+            <!-- ===================== SOLICITAÇÕES ===================== -->
+            <div class="tab-pane fade show active" id="solicitacoes" role="tabpanel">
+              <div class="row g-3">
+                <div class="col-12 col-xl-4">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <h6 class="mb-0 small fw-semibold">Nova solicitação</h6>
+                        <span class="tiny text-muted">cadastro rápido</span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <form id="formSolicitacao" class="row g-3">
+                        <div class="col-12">
+                          <label for="numeroSolicitacao" class="form-label tiny text-uppercase text-muted">Número</label>
+                          <input type="text" class="form-control form-control-sm" id="numeroSolicitacao" required />
+                        </div>
+                        <div class="col-12">
+                          <label for="descricaoSolicitacao" class="form-label tiny text-uppercase text-muted">Descrição</label>
+                          <input type="text" class="form-control form-control-sm" id="descricaoSolicitacao" required />
+                        </div>
+                        <div class="col-12 d-grid">
+                          <button type="submit" class="btn btn-primary btn-sm rounded-3">
+                            Salvar solicitação
+                          </button>
+                        </div>
+                        <div class="col-12">
+                          <p class="tiny text-muted mb-0">
+                            Você pode repetir o mesmo número em mais de uma solicitação se desejar.
+                          </p>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-12">
-                <div class="card border-0 shadow-sm rounded-4">
-                  <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
-                    <h6 class="mb-0">Últimos registros</h6>
-                  </div>
-                  <div class="card-body p-0">
-                    <div class="table-responsive">
-                      <table class="table table-sm table-hover align-middle mb-0">
-                        <thead class="table-light small">
-                          <tr>
-                            <th>Solicitação</th>
-                            <th>Início</th>
-                            <th>Fim</th>
-                            <th>Duração</th>
-                            <th class="text-end">Ações</th>
-                          </tr>
-                        </thead>
-                        <tbody id="listaRegistrosRecentes" class="small"></tbody>
-                      </table>
+                <div class="col-12 col-xl-8">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
+                      <h6 class="mb-0 small fw-semibold">Solicitações cadastradas</h6>
+                      <span class="badge bg-light text-muted ms-2 tiny" id="badgeTotalSolicitacoes">0</span>
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                          <thead class="table-light tiny text-uppercase">
+                            <tr>
+                              <th>#</th>
+                              <th>Número</th>
+                              <th>Descrição</th>
+                              <th>Criada em</th>
+                              <th class="text-end">Ações</th>
+                            </tr>
+                          </thead>
+                          <tbody id="listaSolicitacoes" class="small"></tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- ===================== RELATÓRIOS ===================== -->
-      <div class="tab-pane fade" id="relatorios" role="tabpanel">
-        <div class="row g-3">
-          <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Filtros</h6>
-              </div>
-              <div class="card-body row g-3 align-items-end">
-                <div class="col-6 col-md-3">
-                  <label for="dataInicioRel" class="form-label small">Data início</label>
-                  <input type="date" id="dataInicioRel" class="form-control form-control-sm" />
-                </div>
-                <div class="col-6 col-md-3">
-                  <label for="dataFimRel" class="form-label small">Data fim</label>
-                  <input type="date" id="dataFimRel" class="form-control form-control-sm" />
-                </div>
-                <div class="col-12 col-md-4">
-                  <label class="form-label small d-block">Tipo de relatório</label>
-                  <div class="form-check form-check-inline small">
-                    <input class="form-check-input" type="radio" name="tipoRel" id="relPorDia" value="dia" checked />
-                    <label class="form-check-label" for="relPorDia">Por dia</label>
-                  </div>
-                  <div class="form-check form-check-inline small">
-                    <input class="form-check-input" type="radio" name="tipoRel" id="relPorSolicitacao" value="solicitacao" />
-                    <label class="form-check-label" for="relPorSolicitacao">Por solicitação</label>
+            <!-- ===================== TRABALHO / HORAS ===================== -->
+            <div class="tab-pane fade" id="trabalho" role="tabpanel">
+              <div class="row g-3">
+                <div class="col-12 col-lg-4">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Lançar horas</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="mb-3">
+                        <label for="selectSolicitacaoTrabalho" class="form-label tiny text-uppercase text-muted">
+                          Solicitação
+                        </label>
+                        <select id="selectSolicitacaoTrabalho" class="form-select form-select-sm"></select>
+                      </div>
+                      <div class="d-grid gap-2">
+                        <button id="btnIniciar" class="btn btn-success btn-sm rounded-3">
+                          ▶️ Iniciar
+                        </button>
+                        <button id="btnFinalizar" class="btn btn-danger btn-sm rounded-3">
+                          ⏹️ Finalizar
+                        </button>
+                      </div>
+                      <p class="tiny text-muted mt-3 mb-0">
+                        Ao finalizar, você poderá ajustar manualmente os horários antes de salvar. O sistema bloqueia
+                        horários que se sobrepõem a outros registros.
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div class="col-12 col-md-2 d-grid">
-                  <button id="btnGerarRelatorio" class="btn btn-primary btn-sm rounded-3">
-                    Gerar relatório
-                  </button>
+
+                <div class="col-12 col-lg-8">
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white border-0 rounded-top-4">
+                          <h6 class="mb-0 small fw-semibold">Trabalho em andamento</h6>
+                        </div>
+                        <div class="card-body" id="infoTrabalhoAtual">
+                          <span class="text-muted tiny">Nenhum trabalho em andamento.</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
+                          <h6 class="mb-0 small fw-semibold">Últimos registros</h6>
+                        </div>
+                        <div class="card-body p-0">
+                          <div class="table-responsive">
+                            <table class="table table-sm table-hover align-middle mb-0">
+                              <thead class="table-light tiny text-uppercase">
+                                <tr>
+                                  <th>Solicitação</th>
+                                  <th>Início</th>
+                                  <th>Fim</th>
+                                  <th>Duração</th>
+                                  <th class="text-end">Ações</th>
+                                </tr>
+                              </thead>
+                              <tbody id="listaRegistrosRecentes" class="small"></tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Gráfico</h6>
-              </div>
-              <div class="card-body">
-                <canvas id="graficoRelatorio" height="160"></canvas>
-                <p class="text-muted small mt-2 mb-0">
-                  Os valores do gráfico são em horas decimais. Na tabela abaixo, os totais aparecem em formato HH:MM.
-                </p>
-              </div>
-            </div>
-          </div>
+            <!-- ===================== RELATÓRIOS ===================== -->
+            <div class="tab-pane fade" id="relatorios" role="tabpanel">
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Filtros</h6>
+                    </div>
+                    <div class="card-body row g-3 align-items-end">
+                      <div class="col-6 col-md-3">
+                        <label for="dataInicioRel" class="form-label tiny text-uppercase text-muted">Data início</label>
+                        <input type="date" id="dataInicioRel" class="form-control form-control-sm" />
+                      </div>
+                      <div class="col-6 col-md-3">
+                        <label for="dataFimRel" class="form-label tiny text-uppercase text-muted">Data fim</label>
+                        <input type="date" id="dataFimRel" class="form-control form-control-sm" />
+                      </div>
+                      <div class="col-12 col-md-4">
+                        <label class="form-label tiny text-uppercase text-muted d-block">Tipo de relatório</label>
+                        <div class="form-check form-check-inline tiny">
+                          <input class="form-check-input" type="radio" name="tipoRel" id="relPorDia" value="dia" checked />
+                          <label class="form-check-label" for="relPorDia">Por dia</label>
+                        </div>
+                        <div class="form-check form-check-inline tiny">
+                          <input class="form-check-input" type="radio" name="tipoRel" id="relPorSolicitacao" value="solicitacao" />
+                          <label class="form-check-label" for="relPorSolicitacao">Por solicitação</label>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-2 d-grid">
+                        <button id="btnGerarRelatorio" class="btn btn-primary btn-sm rounded-3">
+                          Gerar relatório
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-          <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Detalhes</h6>
-              </div>
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table table-sm table-hover align-middle mb-0">
-                    <thead class="table-light small">
-                      <tr>
-                        <th id="colunaChaveRel">Dia</th>
-                        <th>Total (HH:MM)</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabelaRelatorio" class="small"></tbody>
-                  </table>
+                <div class="col-12 col-lg-6">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Gráfico</h6>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="graficoRelatorio" height="160"></canvas>
+                      <p class="tiny text-muted mt-2 mb-0">
+                        O gráfico usa horas em formato decimal. A tabela ao lado mostra o total em HH:MM.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Detalhes</h6>
+                    </div>
+                    <div class="card-body p-0">
+                      <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                          <thead class="table-light tiny text-uppercase">
+                            <tr>
+                              <th id="colunaChaveRel">Dia</th>
+                              <th>Total (HH:MM)</th>
+                            </tr>
+                          </thead>
+                          <tbody id="tabelaRelatorio" class="small"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- ===================== BACKUP ===================== -->
-      <div class="tab-pane fade" id="backup" role="tabpanel">
-        <div class="row g-3">
-          <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Exportar backup</h6>
-              </div>
-              <div class="card-body">
-                <p class="small mb-3">
-                  Gera um arquivo JSON com todas as solicitações e registros de horas.
-                </p>
-                <button id="btnExportarBackup" class="btn btn-outline-primary btn-sm rounded-3">
-                  Baixar backup (.json)
-                </button>
+            <!-- ===================== BACKUP ===================== -->
+            <div class="tab-pane fade" id="backup" role="tabpanel">
+              <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Exportar backup</h6>
+                    </div>
+                    <div class="card-body">
+                      <p class="small mb-3">
+                        Gere um arquivo JSON com todas as solicitações e registros de horas atuais.
+                      </p>
+                      <button id="btnExportarBackup" class="btn btn-outline-primary btn-sm rounded-3">
+                        Baixar backup (.json)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                      <h6 class="mb-0 small fw-semibold">Importar backup</h6>
+                    </div>
+                    <div class="card-body">
+                      <p class="small mb-3">
+                        Selecione um arquivo JSON gerado pelo sistema para restaurar os dados.
+                      </p>
+                      <input type="file" id="inputImportarBackup" accept="application/json"
+                             class="form-control form-control-sm mb-3" />
+                      <button id="btnImportarBackup" class="btn btn-outline-success btn-sm rounded-3">
+                        Importar backup
+                      </button>
+                      <p class="mt-2 text-muted tiny mb-0">
+                        Atenção: ao importar, os dados atuais serão substituídos.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-12 col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 h-100">
-              <div class="card-header bg-white border-0 rounded-top-4">
-                <h6 class="mb-0">Importar backup</h6>
-              </div>
-              <div class="card-body">
-                <p class="small mb-3">
-                  Selecione um arquivo JSON gerado pelo sistema para restaurar os dados.
-                </p>
-                <input type="file" id="inputImportarBackup" accept="application/json" class="form-control form-control-sm mb-3" />
-                <button id="btnImportarBackup" class="btn btn-outline-success btn-sm rounded-3">
-                  Importar backup
-                </button>
-                <p class="mt-2 text-muted small mb-0">
-                  Atenção: ao importar, os dados atuais serão substituídos.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-
-    </div>
-  </main>
+      </section>
+    </main>
+  </div>
 
   <!-- Modal Solicitação (editar) -->
   <div class="modal fade" id="modalSolicitacao" tabindex="-1" aria-hidden="true">
@@ -337,11 +359,11 @@
           <form id="formEditarSolicitacao" class="row g-3">
             <input type="hidden" id="editSolicitacaoId" />
             <div class="col-12">
-              <label for="editNumeroSolicitacao" class="form-label small">Número</label>
+              <label for="editNumeroSolicitacao" class="form-label tiny text-uppercase text-muted">Número</label>
               <input type="text" id="editNumeroSolicitacao" class="form-control form-control-sm" required />
             </div>
             <div class="col-12">
-              <label for="editDescricaoSolicitacao" class="form-label small">Descrição</label>
+              <label for="editDescricaoSolicitacao" class="form-label tiny text-uppercase text-muted">Descrição</label>
               <input type="text" id="editDescricaoSolicitacao" class="form-control form-control-sm" required />
             </div>
           </form>
@@ -366,15 +388,15 @@
           <form id="formRegistro">
             <input type="hidden" id="registroEditId" />
             <div class="mb-3">
-              <label for="inicioEdit" class="form-label small">Início</label>
+              <label for="inicioEdit" class="form-label tiny text-uppercase text-muted">Início</label>
               <input type="datetime-local" id="inicioEdit" class="form-control form-control-sm" required />
             </div>
             <div class="mb-3">
-              <label for="fimEdit" class="form-label small">Fim</label>
+              <label for="fimEdit" class="form-label tiny text-uppercase text-muted">Fim</label>
               <input type="datetime-local" id="fimEdit" class="form-control form-control-sm" required />
             </div>
           </form>
-          <div class="alert alert-warning small mb-0">
+          <div class="alert alert-warning tiny mb-0">
             O horário de fim deve ser maior que o de início e não pode conflitar com outros registros.
           </div>
         </div>
@@ -402,6 +424,14 @@
         });
       });
     }
+
+    // data atual no rodapé do sidebar
+    (function () {
+      const el = document.getElementById('resumoDataAtual');
+      if (!el) return;
+      const hoje = new Date();
+      el.textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
+    })();
   </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'controle-horas-v2';
+const CACHE_NAME = 'controle-horas-v3';
 const URLS_TO_CACHE = [
   './',
   './index.html',
