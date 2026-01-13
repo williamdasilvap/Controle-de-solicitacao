@@ -1,13 +1,10 @@
-const CACHE_NAME = 'controle-horas-v1';
+const CACHE_NAME = 'controle-horas-v2';
 const URLS_TO_CACHE = [
   './',
   './index.html',
   './app.js',
   './styles.css',
   './manifest.webmanifest'
-  // Ícones, se quiser:
-  // './icon-192.png',
-  // './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -38,7 +35,6 @@ self.addEventListener('fetch', (event) => {
       return (
         resp ||
         fetch(event.request).catch(() =>
-          // fallback simples pra quando estiver offline e o recurso não estiver em cache
           caches.match('./index.html')
         )
       );

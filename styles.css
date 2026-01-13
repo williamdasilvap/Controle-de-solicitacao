@@ -1,15 +1,42 @@
 body {
   padding-bottom: 40px;
+  font-size: 0.95rem;
 }
 
 .navbar-brand {
   font-weight: 600;
 }
 
-.card-header {
+.card-header h6 {
   font-weight: 600;
 }
 
+.table > :not(caption) > * > * {
+  padding: 0.45rem 0.75rem;
+}
+
 #graficoRelatorio {
-  max-height: 300px;
+  max-height: 260px;
+}
+
+.btn-sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.modal-content {
+  border-radius: 1rem;
+}
+
+.nav-pills .nav-link {
+  border-radius: 999px !important;
+}
+
+.nav-pills .nav-link.active {
+  box-shadow: 0 0.15rem 0.35rem rgba(0, 0, 0, 0.15);
+}
+
+.badge#badgeTotalSolicitacoes {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
 }

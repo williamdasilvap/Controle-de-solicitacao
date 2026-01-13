@@ -15,247 +15,372 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#0d6efd" />
 
-  <!-- Ícone simples (opcional, pode trocar depois) -->
-  <link rel="icon" type="image/png" href="icon-192.png" />
-
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-dark bg-primary mb-3">
+<body class="bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
-      <span class="navbar-brand mb-0 h1">Controle de Horas</span>
+      <span class="navbar-brand fw-semibold">
+        <span class="me-2">⏱️</span>Controle de Horas
+      </span>
     </div>
   </nav>
 
-  <div class="container mb-5">
+  <main class="container my-3 mb-5">
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+          <div class="card-body d-flex flex-wrap align-items-center gap-3">
+            <div>
+              <h5 class="card-title mb-1">Resumo rápido</h5>
+              <p class="text-muted mb-0 small">Cadastre solicitações, registre horas e gere relatórios.</p>
+            </div>
+            <div class="ms-auto d-flex gap-2 flex-wrap">
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#solicitacoes">
+                Solicitações
+              </button>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#trabalho">
+                Trabalho
+              </button>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#relatorios">
+                Relatórios
+              </button>
+              <button class="btn btn-sm btn-outline-primary" data-bs-toggle="tab" data-bs-target="#backup">
+                Backup
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <!-- Abas -->
-    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="solicitacoes-tab" data-bs-toggle="tab"
-                data-bs-target="#solicitacoes" type="button" role="tab">
-          Solicitações
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="trabalho-tab" data-bs-toggle="tab"
-                data-bs-target="#trabalho" type="button" role="tab">
-          Trabalho / Horas
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="relatorios-tab" data-bs-toggle="tab"
-                data-bs-target="#relatorios" type="button" role="tab">
-          Relatórios
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="backup-tab" data-bs-toggle="tab"
-                data-bs-target="#backup" type="button" role="tab">
-          Backup
-        </button>
-      </li>
-    </ul>
+      <div class="col-12">
+        <ul class="nav nav-pills nav-fill small shadow-sm rounded-4 bg-white p-1" id="mainTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-3" id="solicitacoes-tab" data-bs-toggle="tab"
+                    data-bs-target="#solicitacoes" type="button" role="tab">
+              📄 Solicitações
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-3" id="trabalho-tab" data-bs-toggle="tab"
+                    data-bs-target="#trabalho" type="button" role="tab">
+              ▶️ Trabalho
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-3" id="relatorios-tab" data-bs-toggle="tab"
+                    data-bs-target="#relatorios" type="button" role="tab">
+              📊 Relatórios
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-3" id="backup-tab" data-bs-toggle="tab"
+                    data-bs-target="#backup" type="button" role="tab">
+              💾 Backup
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <div class="tab-content pt-3">
 
       <!-- ===================== SOLICITAÇÕES ===================== -->
       <div class="tab-pane fade show active" id="solicitacoes" role="tabpanel">
+        <div class="row g-3">
+          <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Nova Solicitação</h6>
+              </div>
+              <div class="card-body">
+                <form id="formSolicitacao" class="row g-3">
+                  <div class="col-12">
+                    <label for="numeroSolicitacao" class="form-label small">Número</label>
+                    <input type="text" class="form-control form-control-sm" id="numeroSolicitacao" required />
+                  </div>
+                  <div class="col-12">
+                    <label for="descricaoSolicitacao" class="form-label small">Descrição</label>
+                    <input type="text" class="form-control form-control-sm" id="descricaoSolicitacao" required />
+                  </div>
+                  <div class="col-12 d-grid">
+                    <button type="submit" class="btn btn-primary btn-sm rounded-3">
+                      Salvar solicitação
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
 
-        <div class="card mb-3">
-          <div class="card-header">Nova Solicitação</div>
-          <div class="card-body">
-            <form id="formSolicitacao" class="row g-3">
-              <div class="col-md-4">
-                <label for="numeroSolicitacao" class="form-label">Número</label>
-                <input type="text" class="form-control" id="numeroSolicitacao" required />
+          <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
+                <h6 class="mb-0">Solicitações cadastradas</h6>
+                <span class="badge bg-light text-muted ms-2 small" id="badgeTotalSolicitacoes">0</span>
               </div>
-              <div class="col-md-8">
-                <label for="descricaoSolicitacao" class="form-label">Descrição</label>
-                <input type="text" class="form-control" id="descricaoSolicitacao" required />
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-sm table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                      <tr>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Descrição</th>
+                        <th>Criada em</th>
+                        <th class="text-end">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="listaSolicitacoes" class="small"></tbody>
+                  </table>
+                </div>
               </div>
-              <div class="col-12">
-                <button type="submit" class="btn btn-primary">Salvar Solicitação</button>
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-
-        <div class="card">
-          <div class="card-header">Solicitações cadastradas</div>
-          <div class="card-body table-responsive">
-            <table class="table table-sm table-striped align-middle">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Número</th>
-                  <th>Descrição</th>
-                  <th>Criada em</th>
-                </tr>
-              </thead>
-              <tbody id="listaSolicitacoes"></tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
 
       <!-- ===================== TRABALHO / HORAS ===================== -->
       <div class="tab-pane fade" id="trabalho" role="tabpanel">
-
-        <div class="card mb-3">
-          <div class="card-header">Selecionar Solicitação</div>
-          <div class="card-body row g-3 align-items-end">
-            <div class="col-md-8">
-              <label for="selectSolicitacaoTrabalho" class="form-label">Solicitação</label>
-              <select id="selectSolicitacaoTrabalho" class="form-select"></select>
+        <div class="row g-3">
+          <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Selecionar solicitação</h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="selectSolicitacaoTrabalho" class="form-label small">Solicitação</label>
+                  <select id="selectSolicitacaoTrabalho" class="form-select form-select-sm"></select>
+                </div>
+                <div class="d-grid gap-2">
+                  <button id="btnIniciar" class="btn btn-success btn-sm rounded-3">
+                    ▶️ Iniciar
+                  </button>
+                  <button id="btnFinalizar" class="btn btn-danger btn-sm rounded-3">
+                    ⏹️ Finalizar
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="col-md-4 text-md-end">
-              <button id="btnIniciar" class="btn btn-success me-2">Iniciar</button>
-              <button id="btnFinalizar" class="btn btn-danger">Finalizar</button>
+          </div>
+
+          <div class="col-12 col-lg-8">
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                  <div class="card-header bg-white border-0 rounded-top-4">
+                    <h6 class="mb-0">Trabalho em andamento</h6>
+                  </div>
+                  <div class="card-body" id="infoTrabalhoAtual">
+                    <span class="text-muted small">Nenhum trabalho em andamento.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                  <div class="card-header bg-white border-0 rounded-top-4 d-flex align-items-center">
+                    <h6 class="mb-0">Últimos registros</h6>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-sm table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                          <tr>
+                            <th>Solicitação</th>
+                            <th>Início</th>
+                            <th>Fim</th>
+                            <th>Duração</th>
+                            <th class="text-end">Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody id="listaRegistrosRecentes" class="small"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
-
-        <div class="card mb-3">
-          <div class="card-header">Trabalho em andamento</div>
-          <div class="card-body" id="infoTrabalhoAtual">
-            Nenhum trabalho em andamento.
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Últimos registros</div>
-          <div class="card-body table-responsive">
-            <table class="table table-sm table-striped align-middle">
-              <thead>
-                <tr>
-                  <th>Solicitação</th>
-                  <th>Início</th>
-                  <th>Fim</th>
-                  <th>Duração (h)</th>
-                </tr>
-              </thead>
-              <tbody id="listaRegistrosRecentes"></tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
 
       <!-- ===================== RELATÓRIOS ===================== -->
       <div class="tab-pane fade" id="relatorios" role="tabpanel">
-
-        <div class="card mb-3">
-          <div class="card-header">Filtros</div>
-          <div class="card-body row g-3">
-            <div class="col-md-3">
-              <label for="dataInicioRel" class="form-label">Data início</label>
-              <input type="date" id="dataInicioRel" class="form-control" />
-            </div>
-            <div class="col-md-3">
-              <label for="dataFimRel" class="form-label">Data fim</label>
-              <input type="date" id="dataFimRel" class="form-control" />
-            </div>
-            <div class="col-md-3">
-              <label class="form-label d-block">Tipo de relatório</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="tipoRel" id="relPorDia" value="dia" checked />
-                <label class="form-check-label" for="relPorDia">Por dia</label>
+        <div class="row g-3">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Filtros</h6>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="tipoRel" id="relPorSolicitacao" value="solicitacao" />
-                <label class="form-check-label" for="relPorSolicitacao">Por solicitação</label>
+              <div class="card-body row g-3 align-items-end">
+                <div class="col-6 col-md-3">
+                  <label for="dataInicioRel" class="form-label small">Data início</label>
+                  <input type="date" id="dataInicioRel" class="form-control form-control-sm" />
+                </div>
+                <div class="col-6 col-md-3">
+                  <label for="dataFimRel" class="form-label small">Data fim</label>
+                  <input type="date" id="dataFimRel" class="form-control form-control-sm" />
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label small d-block">Tipo de relatório</label>
+                  <div class="form-check form-check-inline small">
+                    <input class="form-check-input" type="radio" name="tipoRel" id="relPorDia" value="dia" checked />
+                    <label class="form-check-label" for="relPorDia">Por dia</label>
+                  </div>
+                  <div class="form-check form-check-inline small">
+                    <input class="form-check-input" type="radio" name="tipoRel" id="relPorSolicitacao" value="solicitacao" />
+                    <label class="form-check-label" for="relPorSolicitacao">Por solicitação</label>
+                  </div>
+                </div>
+                <div class="col-12 col-md-2 d-grid">
+                  <button id="btnGerarRelatorio" class="btn btn-primary btn-sm rounded-3">
+                    Gerar relatório
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="col-md-3 d-flex align-items-end">
-              <button id="btnGerarRelatorio" class="btn btn-primary w-100">Gerar relatório</button>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Gráfico</h6>
+              </div>
+              <div class="card-body">
+                <canvas id="graficoRelatorio" height="160"></canvas>
+                <p class="text-muted small mt-2 mb-0">
+                  Os valores do gráfico são em horas decimais. Na tabela abaixo, os totais aparecem em formato HH:MM.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Detalhes</h6>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-sm table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                      <tr>
+                        <th id="colunaChaveRel">Dia</th>
+                        <th>Total (HH:MM)</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabelaRelatorio" class="small"></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="card mb-3">
-          <div class="card-header">Gráfico</div>
-          <div class="card-body">
-            <canvas id="graficoRelatorio" height="120"></canvas>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Detalhes</div>
-          <div class="card-body table-responsive">
-            <table class="table table-sm table-striped align-middle">
-              <thead>
-                <tr>
-                  <th id="colunaChaveRel">Dia</th>
-                  <th>Total de horas</th>
-                </tr>
-              </thead>
-              <tbody id="tabelaRelatorio"></tbody>
-            </table>
-          </div>
-        </div>
-
       </div>
 
       <!-- ===================== BACKUP ===================== -->
       <div class="tab-pane fade" id="backup" role="tabpanel">
+        <div class="row g-3">
+          <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Exportar backup</h6>
+              </div>
+              <div class="card-body">
+                <p class="small mb-3">
+                  Gera um arquivo JSON com todas as solicitações e registros de horas.
+                </p>
+                <button id="btnExportarBackup" class="btn btn-outline-primary btn-sm rounded-3">
+                  Baixar backup (.json)
+                </button>
+              </div>
+            </div>
+          </div>
 
-        <div class="card mb-3">
-          <div class="card-header">Exportar backup</div>
-          <div class="card-body">
-            <p>Gera um arquivo JSON com todas as solicitações e registros de horas.</p>
-            <button id="btnExportarBackup" class="btn btn-outline-primary">
-              Baixar backup (.json)
-            </button>
+          <div class="col-12 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-header bg-white border-0 rounded-top-4">
+                <h6 class="mb-0">Importar backup</h6>
+              </div>
+              <div class="card-body">
+                <p class="small mb-3">
+                  Selecione um arquivo JSON gerado pelo sistema para restaurar os dados.
+                </p>
+                <input type="file" id="inputImportarBackup" accept="application/json" class="form-control form-control-sm mb-3" />
+                <button id="btnImportarBackup" class="btn btn-outline-success btn-sm rounded-3">
+                  Importar backup
+                </button>
+                <p class="mt-2 text-muted small mb-0">
+                  Atenção: ao importar, os dados atuais serão substituídos.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="card">
-          <div class="card-header">Importar backup</div>
-          <div class="card-body">
-            <p>Selecione um arquivo JSON gerado pelo sistema para restaurar os dados.</p>
-            <input type="file" id="inputImportarBackup" accept="application/json" class="form-control mb-3" />
-            <button id="btnImportarBackup" class="btn btn-outline-success">
-              Importar backup
-            </button>
-            <p class="mt-2 text-muted small">
-              Atenção: ao importar, os dados atuais serão substituídos.
-            </p>
-          </div>
-        </div>
-
       </div>
 
     </div>
-  </div>
+  </main>
 
-  <!-- Modal Finalizar / Editar horários -->
-  <div class="modal fade" id="modalFinalizar" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
+  <!-- Modal Solicitação (editar) -->
+  <div class="modal fade" id="modalSolicitacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4">
         <div class="modal-header">
-          <h5 class="modal-title">Finalizar trabalho / ajustar horários</h5>
+          <h5 class="modal-title">Editar solicitação</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
-          <form id="formFinalizar">
-            <div class="mb-3">
-              <label for="inicioEdit" class="form-label">Início</label>
-              <input type="datetime-local" id="inicioEdit" class="form-control" required />
+          <form id="formEditarSolicitacao" class="row g-3">
+            <input type="hidden" id="editSolicitacaoId" />
+            <div class="col-12">
+              <label for="editNumeroSolicitacao" class="form-label small">Número</label>
+              <input type="text" id="editNumeroSolicitacao" class="form-control form-control-sm" required />
             </div>
-            <div class="mb-3">
-              <label for="fimEdit" class="form-label">Fim</label>
-              <input type="datetime-local" id="fimEdit" class="form-control" required />
+            <div class="col-12">
+              <label for="editDescricaoSolicitacao" class="form-label small">Descrição</label>
+              <input type="text" id="editDescricaoSolicitacao" class="form-control form-control-sm" required />
             </div>
           </form>
-          <div class="alert alert-warning small">
-            Certifique-se de que o horário de fim seja maior que o de início.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnSalvarSolicitacaoEdit" class="btn btn-primary btn-sm">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Registro (finalizar / editar) -->
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tituloModalRegistro">Ajustar horários</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formRegistro">
+            <input type="hidden" id="registroEditId" />
+            <div class="mb-3">
+              <label for="inicioEdit" class="form-label small">Início</label>
+              <input type="datetime-local" id="inicioEdit" class="form-control form-control-sm" required />
+            </div>
+            <div class="mb-3">
+              <label for="fimEdit" class="form-label small">Fim</label>
+              <input type="datetime-local" id="fimEdit" class="form-control form-control-sm" required />
+            </div>
+          </form>
+          <div class="alert alert-warning small mb-0">
+            O horário de fim deve ser maior que o de início e não pode conflitar com outros registros.
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" id="btnSalvarFinalizar" class="btn btn-primary">Salvar</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnSalvarRegistro" class="btn btn-primary btn-sm">Salvar</button>
         </div>
       </div>
     </div>
@@ -270,7 +395,6 @@
   <script src="app.js"></script>
 
   <script>
-    // Registro do Service Worker para PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
         navigator.serviceWorker.register('service-worker.js').catch(function (err) {
